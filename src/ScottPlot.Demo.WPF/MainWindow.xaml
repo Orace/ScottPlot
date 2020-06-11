@@ -187,6 +187,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchTickSpacingStrategy">
+                            <TextBlock TextAlignment="Center">
+                                Tick Spacing
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Demonstrate how to change axis tick spacing
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

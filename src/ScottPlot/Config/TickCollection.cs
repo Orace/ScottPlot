@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Config
 {
@@ -29,6 +26,7 @@ namespace ScottPlot.Config
         public bool invertSign;
         public bool logScale;
         public string numericFormatString;
+        public ITickSpacingStrategy tickSpacingStrategy;
 
         public TickCollection(bool verticalAxis)
         {
@@ -133,14 +131,14 @@ namespace ScottPlot.Config
                 low = settings.axes.y.min - settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 high = settings.axes.y.max + settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
-                tickSpacing = (settings.ticks.manualSpacingY != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.manualSpacingY != 0) ? settings.ticks.manualSpacingY : GetTickSpacing(low, high, maxTickCount);
             }
             else
             {
                 low = settings.axes.x.min - settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 high = settings.axes.x.max + settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(settings.dataSize.Width / maxLabelSize.Width * 1.2);
-                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingX : GetTickSpacing(low, high, maxTickCount);
             }
 
             // now that tick spacing is known, populate the list of ticks and labels
@@ -188,26 +186,9 @@ namespace ScottPlot.Config
             return $"Tick Collection: [{allTickLabels}] {cornerLabel}";
         }
 
-        private static double GetIdealTickSpacing(double low, double high, int maxTickCount)
+        private double GetTickSpacing(double low, double high, int maxTickCount)
         {
-            double range = high - low;
-            int exponent = (int)Math.Log10(range);
-            List<double> tickSpacings = new List<double>() { Math.Pow(10, exponent) };
-            tickSpacings.Add(tickSpacings.Last());
-            tickSpacings.Add(tickSpacings.Last());
-
-            int divisions = 0;
-            double[] divBy = new double[] { 2, 2, 2.5 }; // dividing from 10 yields 5, 2.5, and 1.
-
-            while (true)
-            {
-                tickSpacings.Add(tickSpacings.Last() / divBy[divisions++ % divBy.Length]);
-                int tickCount = (int)(range / tickSpacings.Last());
-                if ((tickCount > maxTickCount) || (tickSpacings.Count > 1000))
-                    break;
-            }
-
-            return tickSpacings[tickSpacings.Count - 3];
+            return (tickSpacingStrategy ?? DefaultTickSpacingStrategy.Instance).GetTickSpacing(low, high, maxTickCount);
         }
 
         private string FormatLocal(double value, CultureInfo culture, int maximumDecimalPlaces = 5)

@@ -64,6 +64,11 @@ namespace ScottPlot.Demo.WPF
             new WpfDemos.ShowValueOnHover().ShowDialog();
         }
 
+        private void LaunchTickSpacingStrategy(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.TickSpacingStrategy().ShowDialog();
+        }
+
         private void LaunchTransparentBackground(object sender, RoutedEventArgs e)
         {
             new WpfDemos.TransparentBackground().ShowDialog();

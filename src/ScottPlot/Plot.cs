@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using ScottPlot.Config;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -1802,7 +1803,9 @@ namespace ScottPlot
             bool? logScaleY = null,
             string numericFormatStringX = null,
             string numericFormatStringY = null,
-            bool? snapToNearestPixel = null
+            bool? snapToNearestPixel = null,
+            ITickSpacingStrategy tickSpacingStrategyX = null,
+            ITickSpacingStrategy tickSpacingStrategyY = null
             )
         {
             if (displayTicksX != null)
@@ -1853,6 +1856,10 @@ namespace ScottPlot
                 settings.ticks.y.numericFormatString = numericFormatStringY;
             if (snapToNearestPixel != null)
                 settings.ticks.snapToNearestPixel = snapToNearestPixel.Value;
+            if (tickSpacingStrategyX != null)
+                settings.ticks.x.tickSpacingStrategy = tickSpacingStrategyX;
+            if (tickSpacingStrategyY != null)
+                settings.ticks.y.tickSpacingStrategy = tickSpacingStrategyY;
 
             // dont use offset notation if the sign is inverted
             if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)

@@ -1,0 +1,26 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.WpfDemos.TickSpacingStrategy"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="Live Data (fixed array size)" Height="450" Width="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Label>X axis tick strategy</Label>
+            <ComboBox SelectedIndex="0" SelectionChanged="XStrategy">
+                <ComboBoxItem Content="Default"/>
+                <ComboBoxItem Content="OneFive"/>
+            </ComboBox>
+            <Separator Width="5"/>
+            <Label>Y axis tick strategy</Label>
+            <ComboBox SelectedIndex="0" SelectionChanged="YStrategy">
+                <ComboBoxItem Content="Default"/>
+                <ComboBoxItem Content="OneFive"/>
+            </ComboBox>
+        </StackPanel>
+        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+    </DockPanel>
+</Window>
